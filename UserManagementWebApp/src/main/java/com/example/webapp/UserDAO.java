@@ -2,7 +2,6 @@ package com.example.webapp;
 
 import java.sql.*;
 import java.util.*;
-import org.mindrot.jbcrypt.BCrypt;
 
 public class UserDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/user_management_db";
@@ -10,9 +9,8 @@ public class UserDAO {
     private String jdbcPassword = "your_mysql_password";
 
     private static final String INSERT_USER = "INSERT INTO users (username,password,email,role) VALUES (?,?,?,?)";
-    private static final String SELECT_USER_BY_USERNAME = "SELECT * FROM users WHERE username=?";
+    private static final String SELECT_USER_BY_USERNAME_PASSWORD = "SELECT * FROM users WHERE username=? AND password=?";
     private static final String SELECT_ALL_USERS = "SELECT * FROM users";
-    private static final String UPDATE_USER = "UPDATE users SET username=?, email=?, role=? WHERE id=?";
     private static final String DELETE_USER = "DELETE FROM users WHERE id=?";
 
     protected Connection getConnection() throws SQLException {
@@ -25,7 +23,7 @@ public class UserDAO {
         try(Connection conn = getConnection();
             PreparedStatement ps = conn.prepareStatement(INSERT_USER)) {
             ps.setString(1, user.getUsername());
-            ps.setString(2, hashPassword(user.getPassword()));
+            ps.setString(2, user.getPassword()); 
             ps.setString(3, user.getEmail());
             ps.setString(4, "user");
             rowInserted = ps.executeUpdate() > 0;
@@ -36,18 +34,16 @@ public class UserDAO {
     public User authenticateUser(String username, String password) {
         User user = null;
         try(Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_USERNAME)) {
+            PreparedStatement ps = conn.prepareStatement(SELECT_USER_BY_USERNAME_PASSWORD)) {
             ps.setString(1, username);
+            ps.setString(2, password);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
-                String hashed = rs.getString("password");
-                if(checkPassword(password, hashed)) {
-                    user = new User();
-                    user.setId(rs.getInt("id"));
-                    user.setUsername(rs.getString("username"));
-                    user.setEmail(rs.getString("email"));
-                    user.setRole(rs.getString("role"));
-                }
+                user = new User();
+                user.setId(rs.getInt("id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(rs.getString("role"));
             }
         } catch(SQLException e) { e.printStackTrace(); }
         return user;
@@ -70,19 +66,6 @@ public class UserDAO {
         return users;
     }
 
-    public boolean updateUser(User user) {
-        boolean rowUpdated = false;
-        try(Connection conn = getConnection();
-            PreparedStatement ps = conn.prepareStatement(UPDATE_USER)) {
-            ps.setString(1, user.getUsername());
-            ps.setString(2, user.getEmail());
-            ps.setString(3, user.getRole());
-            ps.setInt(4, user.getId());
-            rowUpdated = ps.executeUpdate() > 0;
-        } catch(SQLException e) { e.printStackTrace(); }
-        return rowUpdated;
-    }
-
     public boolean deleteUser(int id) {
         boolean rowDeleted = false;
         try(Connection conn = getConnection();
@@ -92,7 +75,4 @@ public class UserDAO {
         } catch(SQLException e) { e.printStackTrace(); }
         return rowDeleted;
     }
-
-    private String hashPassword(String password) { return BCrypt.hashpw(password, BCrypt.gensalt()); }
-    private boolean checkPassword(String password, String hashed) { return BCrypt.checkpw(password, hashed); }
 }
