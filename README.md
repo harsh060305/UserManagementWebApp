@@ -8,6 +8,7 @@ A simple Java Full-Stack Web Application for user registration, login, profile m
 Built with:
 
  1.Java Servlets + JSP
+ 
  2.MySQL Database
  3.CSS for styling
  4.Apache Tomcat
