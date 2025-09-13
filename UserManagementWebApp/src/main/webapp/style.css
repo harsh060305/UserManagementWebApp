@@ -1,6 +1,5 @@
 @charset "UTF-8";
 
-/* Reset some default styles */
 * {
     margin: 0;
     padding: 0;
@@ -8,7 +7,6 @@
     font-family: 'Arial', sans-serif;
 }
 
-/* Body styling */
 body {
     background: #f0f2f5;
     color: #333;
@@ -18,7 +16,6 @@ body {
     align-items: center;
 }
 
-/* Container for forms */
 .container {
     background: #fff;
     padding: 30px 40px;
@@ -28,14 +25,12 @@ body {
     max-width: 450px;
 }
 
-/* Headings */
 h2 {
     text-align: center;
     margin-bottom: 20px;
     color: #007BFF;
 }
 
-/* Form inputs */
 input[type="text"],
 input[type="password"],
 input[type="email"] {
@@ -54,7 +49,6 @@ input[type="email"]:focus {
     outline: none;
 }
 
-/* Buttons */
 button {
     width: 100%;
     padding: 12px;
@@ -71,7 +65,6 @@ button:hover {
     background: #0056b3;
 }
 
-/* Links */
 a {
     color: #007BFF;
     text-decoration: none;
@@ -84,7 +77,6 @@ a:hover {
     text-decoration: underline;
 }
 
-/* Table styling for admin page */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -110,7 +102,6 @@ tr:hover {
     background: #f1f1f1;
 }
 
-/* Responsive */
 @media(max-width: 500px) {
     .container {
         padding: 20px;
@@ -120,3 +111,4 @@ tr:hover {
         font-size: 14px;
     }
 }
+
