@@ -8,7 +8,7 @@
 User user = (User) session.getAttribute("user");
 if(user == null || !"admin".equals(user.getRole())) response.sendRedirect("login.jsp");
 List<User> users = (List<User>) request.getAttribute("userList");
-%>
+%> 
 <!DOCTYPE html>
 <html>
 <head>
