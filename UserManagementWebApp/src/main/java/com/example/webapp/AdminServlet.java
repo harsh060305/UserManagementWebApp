@@ -11,7 +11,7 @@ public class AdminServlet extends HttpServlet {
         HttpSession session = request.getSession(false);
         if(session == null || session.getAttribute("user") == null) {
             response.sendRedirect("login.jsp");
-            return;
+            return; 
         }
 
         User user = (User) session.getAttribute("user");
