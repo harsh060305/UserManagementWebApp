@@ -9,7 +9,7 @@ public class AdminServlet extends HttpServlet {
     private UserDAO dao = new UserDAO();
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession(false);
-        if(session == null || session.getAttribute("user") == null) {
+        if(session == null || session.getAttribute("user") == null) { 
             response.sendRedirect("login.jsp");
             return; 
         }
